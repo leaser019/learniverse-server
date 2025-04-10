@@ -1,0 +1,37 @@
+'use strict'
+const mongoose = require('mongoose')
+const { logger } = require('../configs/config.logger')
+const configEnv = require('../configs/config.mongodb')
+
+const connectionString = configEnv.database.connectionString
+
+class Database {
+  constructor() {
+    this.connect()
+  }
+
+  connect() {
+    if (process.env.NODE_ENV === 'development') {
+      mongoose.set('debug', true)
+      mongoose.set('debug', { color: true })
+    }
+    mongoose
+      .connect(connectionString)
+      .then(() => {
+        logger.info('Connected to MongoDB')
+      })
+      .catch((error) => {
+        logger.error('Error connecting to MongoDB:', error)
+      })
+  }
+
+  static getInstance() {
+    if (!Database.instance) {
+      Database.instance = new Database()
+    }
+    return Database.instance
+  }
+}
+
+const instanceDatabase = Database.getInstance()
+module.exports = instanceDatabase

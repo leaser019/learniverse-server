@@ -1,0 +1,54 @@
+{
+  "name": "lerniverse-server",
+  "version": "1.0.0",
+  "description": "Server for learniverse system",
+  "homepage": "https://github.com/leaser019/learniverse-server#readme",
+  "bugs": {
+    "url": "https://github.com/leaser019/learniverse-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leaser019/learniverse-server.git"
+  },
+  "license": "ISC",
+  "author": "Vo Minh Khang",
+  "type": "commonjs",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-winston": "^4.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@types/node": "^22.14.0",
+    "compression": "^1.8.0",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^16.0.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.14",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.29.1"
+  }
+}
