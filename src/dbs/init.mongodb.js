@@ -21,7 +21,7 @@ class Database {
         logger.info('Connected to MongoDB')
       })
       .catch((error) => {
-        logger.error('Error connecting to MongoDB:', error)
+        logger.warn('Error connecting to MongoDB:', error)
       })
   }
 

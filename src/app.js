@@ -25,6 +25,23 @@ require('./dbs/init.mongodb')
 checkOverload()
 
 // Routes
-app.use('', require('./router'))
+app.use('/', require('./router'))
+
+// Error handling middleware
+app.use((req, res, next) => {
+  const error = new Error('Not Found')
+  error.status = 404
+  next(error)
+})
+
+app.use((error, req, res, next) => {
+  const codeStatus = error.status || 500
+  return res.status(codeStatus).json({
+    status: 'error',
+    code: codeStatus,
+    message: error.message || 'Internal Server Error',
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+  })
+})
 
 module.exports = app

@@ -1,21 +1,39 @@
 'use strict'
 
-const keyToken = require('../models/keytoken.models')
-const logger = require('../configs/config.logger')
+const keyTokenModal = require('../models/keytoken.models')
+const { logger } = require('../configs/config.logger')
+const { Types } = require('mongoose')
 
 class KeyTokenServices {
-  static async createKeyToken({ userId, publicKey, privateKey }) {
+  static async createKeyToken({ userId, publicKey, privateKey, refreshToken }) {
     try {
-      const token = await keyToken.create({
-        user: userId,
+      const filter = { user: userId }
+      const updatedData = {
         publicKey,
-        privateKey
-      })
+        privateKey,
+        refreshToken,
+        refreshTokensUsed: []
+      }
+      const options = { new: true, upsert: true }
+      const token = await keyTokenModal.findOneAndUpdate(filter, updatedData, options)
       return token ? token.publicKey : null
     } catch (error) {
       logger.warn('Error creating key token:', error)
-      throw new Error('Error creating key token')
+      return error
     }
+  }
+  static async findByUserId(userId) {
+    try {
+      const res = await keyTokenModal.findOne({ user: new Types.ObjectId(userId) })
+      return res
+    } catch (error) {
+      logger.warn('Error finding key token:', error)
+      return error
+    }
+  }
+
+  static async removeKeyById(id) {
+    return await keyTokenModal.findByIdAndDelete(id)
   }
 }
 

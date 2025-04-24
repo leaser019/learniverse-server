@@ -21,11 +21,11 @@ const userSchema = new Schema(
       unique: true
     },
     role: {
-      type: Array,
-      // enum: ['admin', 'user'],
-      default: ['user']
+      type: [String],
+      enum: ['001', '002', '003'],
+      default: ['002']
     },
-    mobile: {
+    phone: {
       type: String,
       required: false,
       default: null
