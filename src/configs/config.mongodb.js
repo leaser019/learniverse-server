@@ -1,11 +1,11 @@
 const production = {
   database: {
-    connectionString: process.env.DEV_MONGODB_URI
+    connectionString: process.env.PRO_MONGODB_URI
   }
 }
 const development = {
   database: {
-    connectionString: process.env.PRO_MONGODB_URI
+    connectionString: process.env.DEV_MONGODB_URI
   }
 }
 
