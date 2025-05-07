@@ -1,7 +1,7 @@
 'use strict'
 
 const UserModel = require('../models/user.models')
-const bycrypt = require('bcrypt')
+const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const { logger } = require('../configs/config.logger')
 const KeyTokenService = require('./keytoken.services')
@@ -20,7 +20,7 @@ class AccessService {
       if (checkUser) {
         return { code: 409, message: 'Username already exists' }
       }
-      const passwordHash = await bycrypt.hash(password, 10)
+      const passwordHash = await bcrypt.hash(password, 10)
       const newUser = await UserModel.create({
         username,
         password: passwordHash,
@@ -49,6 +49,44 @@ class AccessService {
     } catch (error) {
       logger.warn('Error during signup:', error)
       return { code: 500, message: 'Internal server error', error }
+    }
+  }
+
+  static login = async ({ email, password }) => {
+    try {
+      const foundUser = await UserModel.findOne({ email })
+
+      if (!foundUser) {
+        return null
+      }
+
+      const match = await bcrypt.compare(password, foundUser.password)
+
+      if (!match) {
+        return null
+      }
+
+      const privateKey = crypto.randomBytes(64).toString('hex')
+      const publicKey = crypto.randomBytes(64).toString('hex')
+
+      const tokens = await createTokenPair({ userId: foundUser._id, email }, privateKey, publicKey)
+
+      await KeyTokenService.createKeyToken({
+        userId: foundUser._id,
+        refreshToken: tokens.refreshToken,
+        privateKey,
+        publicKey
+      })
+
+      return {
+        user: getInfoData({
+          field: ['_id', 'username', 'email'],
+          object: foundUser
+        }),
+        tokens
+      }
+    } catch (error) {
+      throw new Error(error)
     }
   }
 }
