@@ -15,9 +15,15 @@ const UserRole = {
   USER: '002'
 }
 class AccessService {
+  static handleRefreshToken = async (refreshToken) => {
+    const foundToken = await KeyTokenService.findByRefreshToken(refreshToken)
+    if (!foundToken) {
+      throw new BadRequestError('Invalid refresh token')
+    }
+  }
+
   static logout = async (keyStore) => {
     const deleteKey = await KeyTokenService.removeKeyById(keyStore._id)
-    console.log('deleteKey', deleteKey)
     return deleteKey
   }
   static login = async ({ email, password }) => {
@@ -40,7 +46,7 @@ class AccessService {
       refreshToken: token.refreshToken
     })
     return {
-      shop: getInfoData({ field: ['_id', 'username', 'email'], object: userFound }),
+      user: getInfoData({ field: ['_id', 'username', 'email'], object: userFound }),
       token
     }
   }
