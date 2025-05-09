@@ -31,7 +31,7 @@ class AccessService {
     if (!userFound) {
       throw new BadRequestError('User not found')
     }
-    const isPasswordValid = await bycrypt.compare(password, userFound.password)
+    const isPasswordValid = await bcrypt.compare(password, userFound.password)
     if (!isPasswordValid) {
       throw new UnauthorizedRequestError('Invalid password')
     }
@@ -55,7 +55,7 @@ class AccessService {
     if (checkUser) {
       throw new ConflictRequestError('Username already exists')
     }
-    const passwordHash = await bycrypt.hash(password, 10)
+    const passwordHash = await bcrypt.hash(password, 10)
     const newUser = await UserModel.create({
       username,
       password: passwordHash,
@@ -70,69 +70,15 @@ class AccessService {
       if (!token) {
         return { code: 500, message: 'Failed to create key token' }
       }
-      const passwordHash = await bcrypt.hash(password, 10)
-      const newUser = await UserModel.create({
-        username,
-        password: passwordHash,
-        email,
-        role: [UserRole.USER]
-      })
-      if (newUser) {
-        // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 4096 })
-        const privateKey = crypto.randomBytes(64).toString('hex')
-        const publicKey = crypto.randomBytes(64).toString('hex')
-        const keyStore = await KeyTokenService.createKeyToken({ userId: newUser._id, publicKey, privateKey })
-        if (!keyStore) {
-          return { code: 500, message: 'Failed to create key token' }
-        }
-        const token = await createTokenPair({ userId: newUser._id, email }, privateKey, publicKey)
-        return {
-          code: 201,
-          message: 'User signed up successfully',
-          metadata: {
-            user: getInfoData({ field: ['_id', 'username', 'email'], object: newUser }),
-            token
-          }
-        }
-      }
-    }
-  }
-
-  static login = async ({ email, password }) => {
-    try {
-      const foundUser = await UserModel.findOne({ email })
-
-      if (!foundUser) {
-        return null
-      }
-
-      const match = await bcrypt.compare(password, foundUser.password)
-
-      if (!match) {
-        return null
-      }
-
-      const privateKey = crypto.randomBytes(64).toString('hex')
-      const publicKey = crypto.randomBytes(64).toString('hex')
-
-      const tokens = await createTokenPair({ userId: foundUser._id, email }, privateKey, publicKey)
-
-      await KeyTokenService.createKeyToken({
-        userId: foundUser._id,
-        refreshToken: tokens.refreshToken,
-        privateKey,
-        publicKey
-      })
 
       return {
-        user: getInfoData({
-          field: ['_id', 'username', 'email'],
-          object: foundUser
-        }),
-        tokens
+        code: 201,
+        message: 'User signed up successfully',
+        metadata: {
+          user: getInfoData({ field: ['_id', 'username', 'email'], object: newUser }),
+          token
+        }
       }
-    } catch (error) {
-      throw new Error(error)
     }
   }
 }

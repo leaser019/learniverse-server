@@ -17,15 +17,24 @@ app.use(compression())
 app.use(requestLogger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       const allowedOrigins = ['http://localhost:3000', '']
+//       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//         callback(null, true)
+//       } else {
+//         callback(new Error('CORS Error!'))
+//       }
+//     },
+//     credentials: true
+//   })
+// )
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = ['http://localhost:3000', '']
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true)
-      } else {
-        callback(new Error('CORS Error!'))
-      }
+      callback(null, true)
     },
     credentials: true
   })
