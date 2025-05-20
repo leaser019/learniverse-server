@@ -22,6 +22,9 @@ class KeyTokenServices {
       return error
     }
   }
+  static async findByRefreshToken(refreshToken) {
+    return await keyToken.findOne({ refreshToken: { $in: [refreshToken] } })
+  }
   static async findByUserId(userId) {
     try {
       const res = await keyTokenModal.findOne({ user: new Types.ObjectId(userId) })
@@ -36,9 +39,14 @@ class KeyTokenServices {
     return await keyTokenModal.findByIdAndDelete(id)
   }
 
-  static async findByRefreshToken(refreshToken) {
-    return await keyTokenModal.findOne({ refreshTokensUsed: refreshToken })
+  static async updateRefreshToken(id, newRefreshToken) {
+    return await keyTokenModal.findByIdAndUpdate(
+      id,
+      {
+        $push: { refreshToken: newRefreshToken }
+      },
+      { new: true }
+    )
   }
 }
-
 module.exports = KeyTokenServices

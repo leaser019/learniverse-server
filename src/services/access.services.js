@@ -1,7 +1,7 @@
 'use strict'
 
 const UserModel = require('../models/user.models')
-const bycrypt = require('bcrypt')
+const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const { logger } = require('../configs/config.logger')
 const KeyTokenService = require('./keytoken.services')
@@ -31,7 +31,7 @@ class AccessService {
     if (!userFound) {
       throw new BadRequestError('User not found')
     }
-    const isPasswordValid = await bycrypt.compare(password, userFound.password)
+    const isPasswordValid = await bcrypt.compare(password, userFound.password)
     if (!isPasswordValid) {
       throw new UnauthorizedRequestError('Invalid password')
     }
@@ -55,7 +55,7 @@ class AccessService {
     if (checkUser) {
       throw new ConflictRequestError('Username already exists')
     }
-    const passwordHash = await bycrypt.hash(password, 10)
+    const passwordHash = await bcrypt.hash(password, 10)
     const newUser = await UserModel.create({
       username,
       password: passwordHash,
@@ -70,9 +70,14 @@ class AccessService {
       if (!token) {
         return { code: 500, message: 'Failed to create key token' }
       }
+
       return {
-        user: getInfoData({ field: ['_id', 'username', 'email'], object: newUser }),
-        token
+        code: 201,
+        message: 'User signed up successfully',
+        metadata: {
+          user: getInfoData({ field: ['_id', 'username', 'email'], object: newUser }),
+          token
+        }
       }
     }
   }
