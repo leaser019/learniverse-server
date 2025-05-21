@@ -1,6 +1,6 @@
 const app = require('./src/app.js')
 const { logger } = require('./src/configs/config.logger')
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 4000
 
 const server = app.listen(PORT, () => {
   logger.info('Connected!')
