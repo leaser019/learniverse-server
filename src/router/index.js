@@ -5,7 +5,7 @@ const { apiKey, permission } = require('../auth/checkAuth')
 const { authentication } = require('../auth/authUtils')
 
 // Middleware to check API key
-router.use(apiKey)
+// router.use(apiKey)
 router.use('/v1/api/user', require('./access'))
 router.use(permission('002'))
 router.get('/', (req, res) => {
