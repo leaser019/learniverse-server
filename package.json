@@ -16,6 +16,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:prod": "npm start --omit=dev",
     "dev": "nodemon index.js"
   },
   "engines": {
