@@ -42,7 +42,7 @@ app.use(
 
 // Database
 require('./dbs/init.mongodb')
-checkOverload()
+// checkOverload()
 
 // Routes
 app.use('/', require('./router'))
