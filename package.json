@@ -16,9 +16,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "prebuild": "rimraf node_modules/.cache",
-    "build": "echo \"skip build – pure JS, nothing to compile\""
+    "dev": "nodemon index.js"
   },
   "engines": {
     "node": ">=22.0.0",
