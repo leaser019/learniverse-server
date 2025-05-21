@@ -17,9 +17,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "prebuild": "rm -rf node_modules/.cache || true",
-    "build": "npm ci --omit=dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "rimraf node_modules/.cache",
+    "build": "echo \"skip build – pure JS, nothing to compile\""
   },
   "engines": {
     "node": ">=22.0.0",
