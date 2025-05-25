@@ -11,12 +11,7 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
-    contentSecurityPolicy: false
-  })
-)
+app.use(helmet({}))
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
@@ -27,11 +22,11 @@ app.use(
     origin: ['https://learniverse-client.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
-    credentials: true
+    credentials: true,
+    preflightContinue: false
   })
 )
 
-app.options('*', cors())
 
 // Database
 require('./dbs/init.mongodb')
