@@ -7,7 +7,7 @@ const HEADER = {
 }
 
 const { logger } = require('../configs/config.logger')
-const { findById } = require('../services/apiKey.services')
+const { findById } = require('../services/apikey.services')
 
 const apiKey = async (req, res, next) => {
   try {

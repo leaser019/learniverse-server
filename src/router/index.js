@@ -15,6 +15,6 @@ router.use(permission('002'))
 router.get('/', (req, res) => {
   return res.status(200).json({ message: 'Welcome to Learniverse' })
 })
-router.use(authentication)
+// router.use(authentication)
 
 module.exports = router
