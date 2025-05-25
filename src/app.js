@@ -11,7 +11,12 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(helmet())
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    contentSecurityPolicy: false
+  })
+)
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
@@ -25,6 +30,8 @@ app.use(
     credentials: true
   })
 )
+
+app.options('*', cors())
 
 // Database
 require('./dbs/init.mongodb')
