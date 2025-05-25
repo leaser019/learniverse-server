@@ -17,13 +17,13 @@ app.use(compression())
 app.use(requestLogger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(
-  cors({
-    origin: ['http://localhost:3000', 'learniverse-client.vercel.app'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true
-  })
-)
+// app.use(
+//   cors({
+//     origin: ['http://localhost:3000', 'learniverse-client.vercel.app'],
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     credentials: true
+//   })
+// )
 
 // Database
 require('./dbs/init.mongodb')
