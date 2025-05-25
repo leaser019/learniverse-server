@@ -12,20 +12,17 @@ const app = express()
 
 // Middleware
 app.use(helmet({}))
+app.use(
+  cors({
+    origin: '*'
+  })
+)
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(
-  cors({
-    origin: ['https://learniverse-client.vercel.app', 'http://localhost:3000'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: '*',
-    credentials: true,
-    preflightContinue: false
-  })
-)
+
 
 
 // Database
