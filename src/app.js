@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = ['http://localhost:3000', 'learniverse-client.vercel.app']
+      const allowedOrigins = ['http://localhost:3000', 'https://learniverse-client.vercel.app']
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true)
       } else {
