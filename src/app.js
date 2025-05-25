@@ -21,6 +21,7 @@ app.use(
   cors({
     origin: ['http://localhost:3000', 'https://learniverse-client.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: '*',
     credentials: true
   })
 )
