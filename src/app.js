@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://learniverse-client.vercel.app/'],
+    origin: ['https://learniverse-client.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
     credentials: true
