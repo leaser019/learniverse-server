@@ -11,18 +11,7 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        connectSrc: ["'self'", 'http: https:'],
-        upgradeInsecureRequests: []
-      }
-    },
-    crossOriginEmbedderPolicy: false
-  })
-)
+app.use(helmet())
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
@@ -30,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://learniverse-client.vercel.app'],
+    origin: ['http://localhost:3000', 'https://learniverse-client.vercel.app/'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
     credentials: true
