@@ -11,7 +11,18 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(helmet())
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        connectSrc: ["'self'", 'http: https:'],
+        upgradeInsecureRequests: []
+      }
+    },
+    crossOriginEmbedderPolicy: false
+  })
+)
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
