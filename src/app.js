@@ -11,12 +11,8 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(helmet({}))
-app.use(
-  cors({
-    origin: '*'
-  })
-)
+app.use(helmet())
+app.use(cors())
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
