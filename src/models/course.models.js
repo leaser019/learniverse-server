@@ -8,7 +8,8 @@ const lessonSchema = new Schema({
   title: { type: String, required: true },
   duration: { type: String, required: true },
   isFree: { type: Boolean, default: false },
-  type: { type: String, enum: ['video', 'exercise', 'project'], required: true }
+  type: { type: String, enum: ['video', 'exercise', 'project'], required: true },
+  videoUrl: { type: String, require: false }
 })
 
 const moduleSchema = new Schema({
