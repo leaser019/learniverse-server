@@ -8,21 +8,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
-const allowedOrigins = ['https://learniverse-client.vercel.app']
-
-// Middleware
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      console.log('👀 >> Origin đang gõ cửa:', origin)
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
-      }
-    }
-  })
-)
+app.use(cors({ origin: true, credentials: true }))
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
@@ -35,6 +21,8 @@ checkOverload()
 
 // Routes
 app.use('/', require('./router'))
+
+
 
 
 // Error handling middleware
