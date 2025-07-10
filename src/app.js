@@ -10,7 +10,7 @@ require('dotenv').config()
 const app = express()
 
 // Middleware
-app.use(helmet({}))
+// app.use(helmet({}))
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
