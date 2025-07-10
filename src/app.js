@@ -10,18 +10,29 @@ require('dotenv').config()
 
 const app = express()
 const allowedOrigins = [
-  'https://learniverse-client.vercel.app/',
+  'https://learniverse-client.vercel.app',
   'http://localhost:3000',
   'https://waf-fguard.vercel.app'
 ]
 
 // Middleware
-app.use(helmet({}))
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  })
+)
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
   })
 )
 app.use(morgan('dev'))
@@ -29,6 +40,10 @@ app.use(compression())
 app.use(requestLogger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Handle preflight requests
+app.options('*', cors())
+
 // Database
 require('./dbs/init.mongodb')
 checkOverload()
