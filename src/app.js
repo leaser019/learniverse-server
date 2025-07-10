@@ -5,19 +5,11 @@ const helmet = require('helmet')
 const compression = require('compression')
 const { requestLogger } = require('./configs/config.logger')
 const { checkOverload } = require('./helpers/check.connection')
-const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
 
 // Middleware
-const corsOptions = {
-  origin: 'https://learniverse-client.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: '*'
-}
-
-app.use(cors(corsOptions))
 app.use(helmet({}))
 app.use(morgan('dev'))
 app.use(compression())
