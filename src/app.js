@@ -10,7 +10,7 @@ require('dotenv').config()
 
 const app = express()
 const allowedOrigins = [
-  'https://learniverse-client.vercel.app',
+  'https://learniverse-client.vercel.app/',
   'http://localhost:3000',
   'https://waf-fguard.vercel.app'
 ]
