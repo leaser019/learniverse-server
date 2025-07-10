@@ -8,12 +8,13 @@ const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
-const allowedOrigins = ['learniverse-client.vercel.app']
+const allowedOrigins = ['https://learniverse-client.vercel.app']
 
 // Middleware
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log('👀 >> Origin đang gõ cửa:', origin)
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
         callback(null, true)
       } else {
