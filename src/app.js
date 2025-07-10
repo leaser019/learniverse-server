@@ -16,23 +16,18 @@ const allowedOrigins = [
 ]
 
 // Middleware
+app.use(helmet({}))
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true)
       }
+      return callback(new Error('Not allowed by CORS'))
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-  })
-)
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: 'cross-origin' }
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Api-Key']
   })
 )
 app.use(morgan('dev'))
@@ -40,17 +35,12 @@ app.use(compression())
 app.use(requestLogger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
-// Handle preflight requests
-app.options('*', cors())
-
 // Database
 require('./dbs/init.mongodb')
 checkOverload()
 
 // Routes
 app.use('/', require('./router'))
-
 
 // Error handling middleware
 app.use((req, res, next) => {
