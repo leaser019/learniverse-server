@@ -9,27 +9,16 @@ const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
-const allowedOrigins = [
-  'https://learniverse-client.vercel.app',
-  'http://localhost:3000',
-  'https://waf-fguard.vercel.app'
-]
 
 // Middleware
+const corsOptions = {
+  origin: 'https://learniverse-client.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: '*'
+}
+
+app.use(cors(corsOptions))
 app.use(helmet({}))
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true)
-      }
-      return callback(new Error('Not allowed by CORS'))
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Api-Key']
-  })
-)
 app.use(morgan('dev'))
 app.use(compression())
 app.use(requestLogger)
